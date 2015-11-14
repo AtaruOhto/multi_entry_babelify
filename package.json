@@ -1,0 +1,22 @@
+{
+  "name": "babelify_multi_entry_sample",
+  "version": "1.0.0",
+  "description": "just trivial sample",
+  "main": "gulpfile.js",
+  "author": "DJ_Middle",
+  "license": "MIT",
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "browserify": "^11.2.0",
+    "gulp": "^3.9.0",
+    "gulp-imagemin": "^2.3.0",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-util": "^3.0.6",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
+  },
+  "dependencies": {
+  }
+}

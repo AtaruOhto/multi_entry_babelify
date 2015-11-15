@@ -12,14 +12,14 @@ var startWatchify = () => {
 
     let srcDir = './src';
     let distDir = './dist';
-    let targetEntries = ['app.js', 'app2.js'];
-    let babelOptions = [babelify.configure({optional: ['runtime'], stage: 0})];
+    let targetEntries = ['bundle1.js', 'bundle2.js'];
+    let babelOptions = [babelify.configure({presets: ["stage-3"]})];
 
     targetEntries.forEach((entry) => {
 
         let browserifyOptions = {
             entries: [srcDir + '/' + entry],
-            transform: babelOptions,
+            transform: babelify ,
             debug: true
         };
 

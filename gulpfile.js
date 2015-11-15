@@ -13,7 +13,6 @@ var startWatchify = () => {
     let srcDir = './src';
     let distDir = './dist';
     let targetEntries = ['bundle1.js', 'bundle2.js'];
-    let babelOptions = [babelify.configure({presets: ["stage-3"]})];
 
     targetEntries.forEach((entry) => {
 

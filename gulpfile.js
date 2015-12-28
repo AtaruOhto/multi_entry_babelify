@@ -36,16 +36,23 @@ var startWatchify = () => {
         let watchifyStream = watchify(browserify(browserifyOptions));
 
         let execBundle = () => {
-            plugins.util.log(` building plugins{entryPoint}...`);
+            plugins.util.log(` building ${entryPoint}...`);
             return watchifyStream
+                //ソースコードのバンドルを行う
                 .bundle()
+                //Errorが発生した場合にはログにアウトプットする
                 .on('error', plugins.util.log.bind(plugins.util, 'Browserify Error'))
+                //Errorが発生してもタスクを止めない
                 .pipe(plugins.plumber())
+                //streamingをvinyl file objectへと変換する
                 .pipe(source(entryPoint))
+                //vinyl file objectをvinyl buffered object形式に変換する (gulpプラグインが動作するstream形式へと変換)
                 .pipe(buffer())
+                //distディレクトリに出力
                 .pipe(gulp.dest(distDir));
         };
 
+        // 対象ファイルが変更されたら、バンドル処理を行う。
         watchifyStream.on('update', execBundle);
         watchifyStream.on('log', plugins.util.log);
 

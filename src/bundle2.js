@@ -1,5 +1,20 @@
-(() => {
-  let hello = 'hello!!!!';
-  console.log(`${hello} I am from bundle2.js!`);
-})();
+import React, { Component } from 'react';
+import { render } from 'react-dom';
 
+class ComponentTwo extends Component {
+
+  render() {
+    return (
+      <div>
+        {this.props.text}
+      </div>
+    );
+  }
+
+}
+
+let elem = document.querySelector('#root');
+render(
+  <ComponentTwo text={'Hello I\'m Bundle2'} />,
+  elem
+)

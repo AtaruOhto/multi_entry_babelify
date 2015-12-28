@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'),
-    $ = require("gulp-load-plugins")(),
+    plugins = require("gulp-load-plugins")(),
     babelify = require('babelify'),
     browserify = require('browserify'),
     watchify = require('watchify'),
@@ -10,35 +10,46 @@ var gulp = require('gulp'),
 
 var startWatchify = () => {
 
-    let srcDir = './src';
-    let distDir = './dist';
-    let targetEntries = ['bundle1.js', 'bundle2.js'];
+    // コンパイル対象ファイルのディレクトリ名
+    const srcDir = './src';
 
-    targetEntries.forEach((entry) => {
+    // コンパイル先ディレクトリ
+    const distDir = './dist';
 
+    // コンパイル対象のファイル名
+    const sources = ['bundle1.js', 'bundle2.js'];
+    sources.forEach((entryPoint) => {
+
+        // browserifyに渡すオプション群
         let browserifyOptions = {
-            entries: [srcDir + '/' + entry],
-            transform: babelify ,
-            debug: true
+            // コンパイル対象となるファイル
+            entries: [srcDir + '/' + entryPoint],
+            // react, e2015, stage-2 プリセットを適用しつつ、babelifyを使って対象をコンパイルする。
+            // http://babeljs.io/docs/plugins/
+            transform: babelify.configure({presets: ["es2015", "react", "stage-2"]}),
+            debug: true,
+            //watchifyの差分ビルドを有効化
+            cache: {},
+            packageCache: {}
         };
 
         let watchifyStream = watchify(browserify(browserifyOptions));
 
-        let execBrowserify = () => {
-            $.util.log(` building ${entry}........`);
+        let execBundle = () => {
+            plugins.util.log(` building plugins{entryPoint}...`);
             return watchifyStream
                 .bundle()
-                .on('error', $.util.log.bind($.util, 'Browserify Error'))
-                .pipe($.plumber())
-                .pipe(source(entry))
+                .on('error', plugins.util.log.bind(plugins.util, 'Browserify Error'))
+                .pipe(plugins.plumber())
+                .pipe(source(entryPoint))
                 .pipe(buffer())
                 .pipe(gulp.dest(distDir));
         };
 
-        watchifyStream.on('update', execBrowserify);
-        watchifyStream.on('log', $.util.log);
+        watchifyStream.on('update', execBundle);
+        watchifyStream.on('log', plugins.util.log);
 
-        return execBrowserify();
+        return execBundle();
     });
 
 
